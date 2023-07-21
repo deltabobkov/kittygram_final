@@ -13,3 +13,5 @@ COPY entrypoint.sh .
 RUN chmod 777 /app/entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]
+
+CMD ["for tests only"]
