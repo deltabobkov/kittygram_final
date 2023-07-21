@@ -1,5 +1,5 @@
 #!/bin/bash -x
 cd backend
-python manage.py migrate 
+python manage.py migrate --noinput
 python manage.py collectstatic 
-cp -r /app/collected_static/. /backend_static/static/ 
+cp -rf /app/collected_static/. /backend_static/static/ 
