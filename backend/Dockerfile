@@ -14,4 +14,5 @@ RUN chmod 777 /app/entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-CMD ["echo", "Starting server"]
+CMD ["for tests only"] 
+#CMD ["echo", "Starting server"]
