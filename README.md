@@ -1,26 +1,48 @@
-#  Как работать с репозиторием финального задания
+# Проект Kittygram
+[![Main Kittygram workflow](https://github.com/deltabobkov/kittygram_final/actions/workflows/main.yml/badge.svg)](https://github.com/deltabobkov/kittygram_final/actions/workflows/main.yml)
 
-## Что нужно сделать
+![Python](https://img.shields.io/badge/Python-313131?style=flat&logo=Python&logoColor=white&labelColor=306998)
+![Django](https://img.shields.io/badge/Django-313131?style=flat&logo=django&labelColor=092e20)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-313131?style=flat&logo=PostgreSQL&logoColor=ffffff&labelColor=336791)
+![NGINX](https://img.shields.io/badge/NGINX-313131?style=flat&logo=nginx&labelColor=009639)
+![Gunicorn](https://img.shields.io/badge/Gunicorn-313131?style=flat&logo=gunicorn&logoColor=ffffff&labelColor=499848)
+![Docker](https://img.shields.io/badge/Docker-313131?style=flat&logo=docker&logoColor=ffffff&labelColor=1D63ED)
+![Github Actions](https://img.shields.io/badge/Github%20Actions-313131?style=flat&logo=Github-Actions&logoColor=ffffff&labelColor=4a7ebf)
+![Visual Studio](https://img.shields.io/badge/VS%20Code-313131?style=flat&logo=visualstudiocode&logoColor=ffffff&labelColor=0098FF)
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+## Kittygram — социальная сеть для публикации фотографий любимых котиков и их достижений.
+### Локальный запуск c Docker:
 
-## Как проверить работу с помощью автотестов
+1. Клонировать данный репозиторий: 
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+```bash 
+git clone https://github.com/deltabobkov/kittygram_final.git
+```
+2. Создать .env файл в корневой папке проекта, в котором должны содержаться следующие переменные:
+```bash
+POSTGRES_USER=  #пользователь БД
+POSTGRES_PASSWORD= #пароль БД
+DB_NAME=kittygram  #название БД
+DB_HOST=db
+DB_PORT=5432
+
+SECRET_KEY='' #ключ джанго
+DEBUG='' #True или False
+HOSTS='' #список хостов 
+```
+**Для выполнения следующего шага должен быть установлен [docker](https://docs.docker.com/get-docker/)**  
+
+3. В корневой дериктории проекта выполнить команду для создания и запуска контейнеров:
+```bash
+sudo docker compose -f docker-compose.yml up -d
 ```
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+4. Выполнить миграции, собрать и скопировать статику в контейнере backend:
+```bash
+docker compose exec backend python manage.py migrate --noinput
+docker compose exec backend python manage.py collectstatic 
+docker compose exec backend cp -rf /app/collected_static/. /backend_static/static/
+```
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
-
-## Чек-лист для проверки перед отправкой задания
-
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+**Проект будет досупен по адресу:**  
+http://127.0.0.1:9000/  
